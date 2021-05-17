@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
+echo "export GOPATH=~/.go" >> ~/.profile
+source ~/.profile
