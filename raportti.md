@@ -10,6 +10,8 @@ Opettaja: Tero Karvinen
 
 Tarkoituksenani oli luoda tila, joka julkaisisi Android-sovelluksen helposti puhelimelle. Tehtävä osoittautuikin yllättävän hankalaksi, joten päätin tehdä varasuunnitelmani.
 
+Tehtävä löytyy Githubista https://github.com/kri-ku/my_first_salt.
+
 Asensin ohjelmat, joiden pohjana on idea LAMP-stackista.
 
 Valitsin seuraavat ohjelmat:
@@ -21,6 +23,12 @@ Valitsin seuraavat ohjelmat:
 
 Olen tyytyväinen lopputulokseen. Moduli toimii halutusti: se on idempotentti, ja ohjelmat asentuvat haluamillani ominaisuuksilla.
 
+Edit ti:
+Jos jotain opin niin, että Salt on haastava työkalu ja vaatisi paljon opiskelua lisää. Luulin saaneeni modulit hyvin kasaan, mutta kokeiltuani niitä tyhjällä virtuaalikoneella, oli asetuksiin jäänyt kuitenkin paljon ongelmia. Kokeilin modulin asentamista pariin kertaan, ensimmäisellä kerralla Ufw asentui, toisella kerralla ei. Myös MariaDB:n ja GO:n asentamisessa ilmeni ongelmia. Olen raportoinut toisen testauskertani raportin loppuun.
+
+-----
+
+
 Asensin jokaisen ohjelman ensin käsin, jonka jälkeen muodostin ohjelman asentavan Salt-tilan.
 
 Ajankulku hävisi täysin. Moduli on rakennettu useissa palasissa 15. -17-5-2021 eri kellonaikoina. 
@@ -31,11 +39,13 @@ Ympäristö:
 - Ubuntu 20.04: Tehtävät tehty Virtual Boxilla, jolla debian-live-10.7.0-amd64-xfce+nonfree.iso
 - Salt master ja minion toimivat samalla virtuaalikoneella
 
+Testasin modulin toimintaa vielä lopuksi uudella, tyhjällä debian-live-10.7.0-amd64-xfce+nonfree.iso- virtuaalikoneella.
+
 -----
 
 ##  UFW
 
-### Manuaalinen
+### Asennus manuaalisesti
 
 Olin kokeillut palomuurin asentamista jo kotitehtävissä, mutta halusin kokeilla sen asentamista uudelleen.
 
@@ -51,7 +61,7 @@ Avasin portin 22 liikenteelle `$ sudo ufw allow 22/tcp` ja otin jälleen aikajan
 
 ![pic](pictures/2.png)
 
-### Salt
+### Asennus Saltilla
 
 Aloitin Salt-modulin rakentamisen.
 Loin kansion modulini pohjaksi tiedostoon /srv/salt.
@@ -129,7 +139,7 @@ Päätin palata UFW.n pohtimiseen hiukan myöhemmin ja jatkaa palvelimen asennuk
 
 En ollut koskaan kokeillu Nginx:n asennuksia, joten päädyin googlettamaan tutoriaaleja. Löysin [Digitaloceanin ohjeet](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-debian-10) palvelimen asentamiseksi.
 
-### Manuaalisesti
+### Asennus manuaalisesti
 
     $ sudo apt-get update
     $ sudo apt-get install nginx
@@ -184,7 +194,7 @@ Käyttäjän kotisivun näyttäminen onnistui!
 ![pic](pictures/11.png)
 
 
-### Salt
+### Asennus Saltilla
 
 Loin kansion Nginx:n asentamiselle `$ sudo mkdir /srv/salt/nginx`.
 Aloitin kopioimalla kansioon kolme äsken luomaani oletustiedostoa.
@@ -281,7 +291,7 @@ Kopioin vielä UFW:n asetustiedoston, sillä olin avannut liikenteelle uuden por
 
 Jatkoin tietokannan asentamiseen. Olin kokeillu PostgreSQL:n asentamista aikaisemmin, joten päätin kokeilla MariaDB:n asennusta.
 
-### Manuaalisesti
+### Asennus manuaalisesti
 
   Päätin asentaa MariaDB-tietokannan Tero Karvisen [ohjeiden](https://terokarvinen.com//2018/install-mariadb-on-ubuntu-18-04-database-management-system-the-new-mysql/index.html) ja [Digital Oceanin](https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-debian-10) mukaisesti.
 
@@ -331,7 +341,7 @@ Viimeisin komento avasin mahdollisuuden asetusten määrittelyyn. Valinnat piti 
   Komento ei kuitenkaan toiminut. Päätin jatka Salt-tilan luomiseen, ja toivoin pääseväni ainakin tähän asti.
   
 
-  ### Salt
+  ### Asennus Saltilla
 
   Koitin Salt-modulin luomista hyödyntäen aikaisemmin oppimaani PostgreSQL:n asennusta. Tein kansion tilalle.
 
@@ -494,7 +504,7 @@ Poistin jälleen MariaDB:n asennuksen ja koitin tilan ajamista uudelleen:
 
 ## GOLANG
 
-### Manuaalisesti
+### Asennus manuaalisesti
 
 Päätin kokeilla tällä kertaa Go:n asentamista.
 
@@ -542,7 +552,8 @@ Navigoin kotihakemistooni, loin kansion go, ja sinne testiohjelman:
 ![pic](pictures/21.png)
 Go toimii!
 
-### Saltilla
+### Asennus Saltilla
+
 Loin jälleen uuden kansion Salt-tilalleni:
 
     $ sudo mkdir /srv/salt/golang
@@ -780,6 +791,101 @@ Kaikki paketit olikin jo asennettuna koneelleni, mutta tulos näytti lupaavalta:
 Pienten kikkailujen jälkeen sain modulini viimein myös Githubiin:
 
 https://github.com/kri-ku/my_first_salt
+
+## Testaaminen uudella virtuaalikoneella
+
+Lisätty ti 18.5.2021 klo 15:20
+
+Muokkasin vielä ufw kansiotani siten, että *.rules - tiedostoissa on avattuna Saltin käyttämät portit 4505 ja 4506, ja lisäsin muutokset Githubiin.
+
+Loin uuden Virtuaalikoneen [ohjeiden](https://terokarvinen.com//2021/install-debian-on-virtualbox/) mukaisesti, latasin sille gitin, ja kopioin modulini githubista.
+
+    $ sudo apt-get update
+    $ sudo apt-get install -y git
+    $ git config --global user.email kristiinakumila@gmail.com
+    $ git config --global user.name kristiina kumila
+    $ cd /home/kristiina
+    $ git clone https://github.com/kri-ku/my_first_salt.git
+
+  Kansiot menivät väärään paikkaan, joten kopioin koko kansion kansion /srv alle ja nimesin sen uudelleen.
+
+    $ sudo cp -r my_first_salt/ /srv
+    $ sudo mv my_first_salt salt
+
+  Vielä piti asentaa Salt minion ja master. Tein sen [kurssin ensimmäisen kotitehtäväpalautukseni](https://kristiinakumila.wordpress.com/2021/04/05/viikko-1-hei-maailma-verkon-yli-ja-idempotenssi/). Tällä kertaa piti uudelleenkäynnistää molemmat: salt master ja minion. Annoin minionille nimen 'kristiina', jotta se toimisi helposti top.sls.tiedostoa käyttäen.
+
+  Latasin vielä Go:n kansioon /srv/salt/golang.
+
+    $ cd /tmp
+    $ sudo apt-get install wget
+    $ wget https://golang.org/dl/go1.16.4.linux-amd64.tar.gz
+    $ sudo tar -C /srv/salt/golang -xzf go1.16.4.linux-amd64.tar.gz
+
+
+  Ajoin tilan komennolla `$ sudo salt '*' state.apply`.
+
+  ![pic](pictures/31.png)
+
+  Tulos ei näyttänyt kovinkaan lupaavalta. Kokeilin ohjelmia.
+
+  Nginx toimii:
+
+  ![pic](pictures/32.png)
+  ![pic](pictures/33.png)
+
+  -> toimii
+
+
+  Ensimmäinen virhe liittyy ufw:n asennukseen. Erikoista!
+
+  ![pic](pictures/36.png)
+
+  Ufw ei ollut asentunut! Tilan ajamisen tulostus oli niin pitkä (varmasti Go:n kansioiden kopioimisesta johtuen)
+  että päätin ajaa tilan uudelleen paikallisesti.
+
+    $ sudo salt-call --local state.apply
+
+  ![pic](pictures/34.png)
+
+  Ufw: tä ei löytynyt vieläkään. Päivitin paketit ja koitin asentaa sen käsin. Onnistui ja toimi! Tilan ajaminen ei kuitenkaan onnistunut. Olin kokeillut tätä aikaisemmin jo toisella koneella onnistuneesti, päätin jättää asian sikseen. Voisikohan virtuaalikoneessani olla joku ongelma?
+
+  Seuraava ongelma liittyi MariaDB:seen.
+
+  ![pic](pictures/35.png)
+
+  Koitin kirjautua tietokantaan sisään epäonnistuneesti:
+
+      kristiina@helloworld:/srv/salt/ufw$ sudo mariadb -u root
+      ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+
+Käynnistin mariadb:n komennolla:
+
+    $ sudo systemctl restart mariadb
+
+
+  Nyt ainakin kirjautuminen onnistui. Koitin vielä käyttäjänä testaaja:
+
+    kristiina@helloworld:/srv/salt/ufw$ sudo mariadb -u testaaja -p
+    Enter password: 
+    ERROR 1698 (28000): Access denied for user 'testaaja'@'localhost'
+
+Ajoin tilan uudelleen:
+
+    $ sudo salt-call --local state.apply mariadb
+
+Vieläkin sama tulos! Uuden käyttäjän ja tietokannan luominen epäonnistuvat. Tietokanta on asentunut ja root-käyttäjänä sisäänkirjautuminen onnistuu.
+
+Koitin luoda jälleen Go:lla helloworld-ohjelman. Ohjelma ei toiminut. Jonkin aikaa googleteltuani opin, että ympäristömuuttujien asettaminen skriptillä on itseasiassa melko haastavaa. Koitan myös skriptissäni muuttaa käyttäjän kotihakemistoja. Tämä vaatisi hiukan lisää perehtymistä aiheeseen.
+
+Avasin skriptin ja syötin komennot manuaalisesti terminaaliin:
+
+      echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.profile
+      kristiina@helloworld:/tmp$ echo "export GOPATH=~/.go" >> ~/.profile
+      kristiina@helloworld:/tmp$ source ~/.profile
+
+Nyt ohjelman ajaminen toimii.
+
+ ![pic](pictures/38.png)
 
 
 ### MUNIN- sovellus liikenteen seurantaan
